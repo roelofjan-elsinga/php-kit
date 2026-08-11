@@ -8,18 +8,18 @@ jobs:
         name: PHP ${{ matrix.php }}
         strategy:
             matrix:
-                php: [7.4, 8.0, 8.1]
+                php: [8.3, 8.4, 8.5]
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             - name: Setup PHP with dependencies
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
-                  tools: composer:v2, phpunit:9.5.0
+                  tools: composer:v2
                   coverage: pcov
                   extensions: mbstring
             - name: Install Composer dependencies
               run: composer install
             - name: Run PHPUnit
-              run: php -d apc.enable_cli=1 ./vendor/bin/phpunit
+              run: ./vendor/bin/phpunit

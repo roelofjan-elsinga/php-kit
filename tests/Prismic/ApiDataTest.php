@@ -43,19 +43,19 @@ class ApiDataTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Ref::class, $this->data->getRefs());
 
         $this->assertCount(3, $this->data->getBookmarks());
-        $this->assertContainsOnly('string', $this->data->getBookmarks());
+        $this->assertContainsOnlyString($this->data->getBookmarks());
 
         $this->assertCount(6, $this->data->getTypes());
-        $this->assertContainsOnly('string', $this->data->getTypes());
+        $this->assertContainsOnlyString($this->data->getTypes());
 
         $this->assertCount(4, $this->data->getTags());
-        $this->assertContainsOnly('string', $this->data->getTags());
+        $this->assertContainsOnlyString($this->data->getTags());
 
         $this->assertCount(2, $this->data->getForms());
         $this->assertContainsOnlyInstancesOf(stdClass::class, $this->data->getForms());
 
         $this->assertCount(4, $this->data->getLanguages());
-        $this->assertContainsOnly(Language::class, $this->data->getLanguages());
+        $this->assertContainsOnlyInstancesOf(Language::class, $this->data->getLanguages());
 
         $this->assertInstanceOf(Experiments::class, $this->data->getExperiments());
 

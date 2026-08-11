@@ -55,20 +55,20 @@ class Form
     /**
      * Constructs the Form object.
      *
-     * @param string $name      the name of the form
      * @param string $method    the method to use
-     * @param string $rel       the rel if there's one
      * @param string $enctype   the encoding type
      * @param string $action    the action
      * @param array  $fields    the list of Prismic::FieldForm objects that can be used
+     * @param string $name      the name of the form
+     * @param string $rel       the rel if there's one
      */
     private function __construct(
-        ?string $name = null,
         string  $method,
-        ?string $rel = null,
         string  $enctype,
         string  $action,
-        array   $fields
+        array   $fields,
+        ?string $name = null,
+        ?string $rel = null
     ) {
         $this->name    = $name;
         $this->method  = $method;
@@ -129,12 +129,12 @@ class Form
         }
 
         return new self(
-            isset($json->name) ? $json->name : null,
             $json->method,
-            isset($json->rel) ? $json->rel : null,
             $json->enctype,
             $json->action,
-            $fields
+            $fields,
+            isset($json->name) ? $json->name : null,
+            isset($json->rel) ? $json->rel : null
         );
     }
 

@@ -14,6 +14,9 @@ use Psr\Http\Message\RequestInterface;
 use Prophecy\Argument;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Utils;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 
 class ApiTest extends TestCase
 {
@@ -76,7 +79,7 @@ class ApiTest extends TestCase
         $this->cache->get($key)->willReturn(null);
         $url = 'https://whatever.prismic.io/api/v2?access_token=My-Access-Token';
         $response = $this->prophesize(ResponseInterface::class);
-        $response->getBody()->willReturn($this->getJsonFixture('data.json'));
+        $response->getBody()->willReturn(Utils::streamFor($this->getJsonFixture('data.json')));
         $this->httpClient->request('GET', $url)->willReturn($response->reveal());
 
         $this->cache->set(
@@ -111,7 +114,7 @@ class ApiTest extends TestCase
         $this->assertFalse($api->inExperiment());
     }
 
-    public function getPreviewRefs()
+    public static function getPreviewRefs()
     {
         return [
             [
@@ -137,9 +140,7 @@ class ApiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getPreviewRefs
-     */
+    #[DataProvider('getPreviewRefs')]
     public function testPreviewRefIsReturnedWhenPresentInSuperGlobal(array $cookie, string $expect)
     {
         $_COOKIE = $cookie;
@@ -177,9 +178,7 @@ class ApiTest extends TestCase
         $this->assertTrue($api->inExperiment());
     }
 
-    /**
-     * @depends testCorrectExperimentRefIsReturnedWhenCookieIsSet
-     */
+    #[Depends('testCorrectExperimentRefIsReturnedWhenCookieIsSet')]
     public function testPreviewRefTrumpsExperimentRefWhenSet()
     {
         $runningGoogleCookie = '_UQtin7EQAOH5M34RQq6Dg 1';

@@ -6,28 +6,23 @@ namespace Prismic\Test;
 use Prismic\Exception\ExceptionInterface;
 use Prismic\Ref;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 class RefTest extends TestCase
 {
 
-    private $refs;
-
-    public function getRefs()
+    public static function getRefs()
     {
-        if (! $this->refs) {
-            $this->refs = \json_decode($this->getJsonFixture('refs.json'));
-        }
+        $refs = \json_decode(self::getJsonFixture('refs.json'));
         $out = [];
-        foreach ($this->refs->refs as $ref) {
+        foreach ($refs->refs as $ref) {
             $out[] = [$ref];
         }
         return $out;
     }
 
-    /**
-     * @dataProvider getRefs
-     */
+    #[DataProvider('getRefs')]
     public function testParseRefs($json)
     {
         $ref = Ref::parse($json);
@@ -44,9 +39,7 @@ class RefTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider getRefs
-     */
+    #[DataProvider('getRefs')]
     public function testGetScheduledAtTimestamp($json)
     {
         $ref = Ref::parse($json);
@@ -60,18 +53,14 @@ class RefTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider getRefs
-     */
+    #[DataProvider('getRefs')]
     public function testToStringSerialisesToRef($json)
     {
         $ref = Ref::parse($json);
         $this->assertSame($ref->getRef(), (string) $ref);
     }
 
-    /**
-     * @dataProvider getRefs
-     */
+    #[DataProvider('getRefs')]
     public function testGetScheduledDate($json)
     {
         $ref = Ref::parse($json);
