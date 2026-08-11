@@ -5,6 +5,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "symfony/flex": true
+        },
+        "platform": {
+            "php": "8.3"
         }
     },
     "autoload": {
